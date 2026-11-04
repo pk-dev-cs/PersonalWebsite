@@ -27,18 +27,14 @@ test('all required routes and assets are built', async () => {
   }
 });
 
-test('production is static with only the small inline transition fallback and no remote dependencies', async () => {
+test('production is static with no executable client JavaScript or remote dependencies', async () => {
   assert.equal(files.filter((file) => /\.(?:m?js|cjs)$/.test(file)).length, 0);
   for (const file of htmlFiles) {
     const html = await readFile(file, 'utf8');
     const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
-    assert.equal(scripts.length, 2, file);
+    assert.equal(scripts.length, 1, file);
     assert.match(scripts[0][1], /type="application\/ld\+json"/);
     assert.doesNotThrow(() => JSON.parse(scripts[0][2]));
-    assert.match(scripts[1][1], /data-page-transitions/);
-    assert.match(scripts[1][2], /CSSViewTransitionRule/);
-    assert.match(scripts[1][2], /prefers-reduced-motion/);
-    assert.ok(Buffer.byteLength(scripts[1][2]) < 3000, 'Transition fallback exceeds 3 KB');
     assert.doesNotMatch(html, /\bon(?:click|load|mouseover)\s*=|<astro-island|<script[^>]+src=/i);
     assert.doesNotMatch(html, /<(?:img|iframe)[^>]+src="https?:|<link[^>]+rel="stylesheet"[^>]+href="https?:/i);
     assert.doesNotMatch(html, /<form\b/i);
@@ -86,6 +82,24 @@ test('every internal href and asset resolves to a production file', async () => 
   }
 });
 
+test('About has two lightweight local WebP backgrounds without adding backgrounds to other pages', async () => {
+  const html = await read('index.html');
+  assert.match(html, /<main\b[^>]+class="main-with-background"/);
+  const images = [...html.matchAll(/--main-background(?:-mobile)?:\s*url\((\/_astro\/[^)]+\.webp)\)/g)];
+  assert.equal(images.length, 2);
+  assert.notEqual(images[0][1], images[1][1]);
+  for (const [, path] of images) {
+    const image = await readFile(join(dist, path.slice(1)));
+    assert.equal(image.subarray(0, 4).toString(), 'RIFF');
+    assert.equal(image.subarray(8, 12).toString(), 'WEBP');
+    assert.ok(image.length < 250_000, `${path} exceeds 250 KB`);
+  }
+  assert.ok(!files.some((file) => file.includes('main-background') && file.endsWith('.png')));
+  for (const file of htmlFiles.filter((file) => file !== join(dist, 'index.html'))) {
+    assert.doesNotMatch(await readFile(file, 'utf8'), /class="main-with-background"|--main-background:/);
+  }
+});
+
 test('RSS and sitemap expose the same published article links', async () => {
   const feed = await read('rss.xml');
   const sitemap = await read('sitemap-0.xml');
@@ -115,6 +129,7 @@ test('small pages and a real PNG social image are shipped', async () => {
   for (const file of css) {
     bytes += (await stat(file)).size;
     assert.doesNotMatch(await readFile(file, 'utf8'), /@import|https?:\/\/|@font-face/);
+    assert.doesNotMatch(await readFile(file, 'utf8'), /view-transition|page-fade|page-is-entering|page-is-leaving/);
   }
   assert.ok(bytes < 20_000, 'CSS exceeds 20 KB');
   const png = await readFile(join(dist, 'social-card.png'));

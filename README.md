@@ -1,6 +1,6 @@
 # Terminal portfolio
 
-Statyczny prototyp w Astro 7. About jest strona startowa `/`; pozostale zakladki to Resume, Blog i Contact. Bez frameworkow UI i zewnetrznych fontow. Poza danymi SEO JSON-LD jedyny skrypt to maly fallback przejsc fade dla przegladarek bez natywnych przejsc miedzy dokumentami, w tym Firefoksa.
+Statyczny prototyp w Astro 7. About jest strona startowa `/`; pozostale zakladki to Resume, Blog i Contact. Bez frameworkow UI, zewnetrznych fontow i wykonywalnego JavaScript po stronie klienta. Jedyny element script zawiera dane SEO JSON-LD.
 
 ## Uruchomienie
 
@@ -34,6 +34,8 @@ Bez skonfigurowanego originu strona uzywa zarezerwowanego `https://example.inval
 
 Zdjecie przy Resume znajduje sie w `src/assets/przemyslaw-kleszcz.jpg`. To portretowy kadr z dostarczonego zdjecia, bez metadanych oryginalu. Astro podczas budowania tworzy male warianty WebP 176 i 352 px; oryginalna fotografia nie trafia do `dist`. Aby zmienic portret, zastap ten plik, zachowujac proporcje 4:5.
 
+Tlo panelu About pochodzi z `src/assets/main-background.png`. Astro generuje WebP o szerokosci 720 i 1440 px; telefon pobiera mniejszy wariant. Zdjecie jest osobna warstwa `main::before` z `opacity: .18` w `src/styles/global.css`, wiec tekst pozostaje w pelni kryjacy. Tlo nie obejmuje nawigacji, stopki, innych podstron ani wydruku.
+
 ## Dodawanie wpisow
 
 Utworz plik `src/content/blog/moj-wpis.md`:
@@ -63,8 +65,6 @@ Obrazki mozna importowac wzglednie w Markdown, aby Astro zoptymalizowalo je podc
 
 Kazda strona ma wlasny tytul/opis, canonical, Open Graph, Twitter card i JSON-LD. Wpisy maja date publikacji/aktualizacji oraz schemat BlogPosting. Dostepne sa `/rss.xml`, `/robots.txt`, `/sitemap-index.xml` i statyczne 404. RSS zawiera streszczenia i linki do pelnych wpisow. Kanoniczne adresy sa zakonczone ukosnikiem.
 
-Przejscie soft swap obejmuje tylko `.terminal-window`, nie tlo ani copyright pod oknem. Wygaszenie trwa 60 ms, pojawienie 100 ms z delikatnym ruchem o 3 px w gore, bez rozmycia i skalowania. Czasy sa ustawione w `src/styles/global.css`, a fallback odczytuje czas wygaszenia z CSS.
-
-Nawigacja to normalne linki. Systemowy monospace, maly lokalny CSS, bez analityki, cookies, fetchowania danych ani zewnetrznych polaczen. Migajacy kursor jest wylacznie CSS-owy. Przejscia fade-out/fade-in korzystaja z natywnego `@view-transition`; jezeli przegladarka nie udostepnia `CSSViewTransitionRule`, maly skrypt inline w `src/components/PageTransitions.astro` uruchamia te same animacje CSS przy zwyklej nawigacji. Nie ma routera ani hydracji. Fallback nie przechwytuje linkow zewnetrznych, kotwic na tej samej stronie, pobierania plikow, RSS, mailto ani klikniec z klawiszami modyfikujacymi. Bez JS linki nadal dzialaja. Powrot przez historie przywraca widocznosc strony. Nie ma animacji wejscia poszczegolnych elementow ani ruchomych efektow hover. Animacje respektuja `prefers-reduced-motion`; przy ograniczonym ruchu i na wydruku tresc oraz kursor pozostaja statyczne. Wyglad korzysta dokladnie z akcentu `#0d699e`; czytelny tekst na ciemnym tle pozostaje jasny. Systemowe fonty moga sie nieznacznie roznic miedzy platformami.
+Nawigacja to normalne linki, bez animowanych przejsc, przechwytywania klikniec, routera ani hydracji. Systemowy monospace, maly lokalny CSS, bez analityki, cookies, fetchowania danych ani zewnetrznych polaczen. Jedyna animacja to migajacy kursor, wykonany wylacznie w CSS. Respektuje `prefers-reduced-motion`; przy ograniczonym ruchu i na wydruku kursor pozostaje statyczny. Wyglad korzysta dokladnie z akcentu `#0d699e`; czytelny tekst na ciemnym tle pozostaje jasny. Systemowe fonty moga sie nieznacznie roznic miedzy platformami.
 
 Na hostingu wlacz kompresje Brotli/gzip, HTTPS oraz dlugi cache dla hashowanych plikow `/_astro/`. HTML i RSS powinny miec krotszy cache. To konfiguracja hostingu, nie kod wykonywany przez odwiedzajacego.

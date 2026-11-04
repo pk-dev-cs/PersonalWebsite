@@ -7,7 +7,7 @@ export const profile = {
   lastName: 'Kleszcz',
   initials: 'p.k',
   handle: 'pk-dev-cs',
-  role: 'Developer. Designer. Curious human.',
+  role: 'Developer. Maker. Curious human.',
   description: 'I build thoughtful digital experiences.',
   siteDescription: 'Przemysław Kleszcz - Technical Lead and full-stack developer. Experience with .NET, Angular, application architecture, and development teams.',
   location: 'Kraków, PL',

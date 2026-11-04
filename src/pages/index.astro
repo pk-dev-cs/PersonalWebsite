@@ -13,18 +13,6 @@ import { profile } from '../config';
         <p class="hero-description">{profile.description}</p>
         <a class="button" href="/contact/">Get in touch <span aria-hidden="true">-&gt;</span></a>
       </section>
-      <figure class="ascii-art" aria-hidden="true">
-        <pre>{`    .----------------.
-   /                /|
-  /     ${profile.initials.toUpperCase().replace('.', ' / ')}      / |
- /________________/  |
- |                |  |
- |   > hello_     |  |
- |                | /
- |                |/
- '----------------'`}</pre>
-        <figcaption>[ human inside ]</figcaption>
-      </figure>
     </div>
     <div class="availability"><span><span class="square" aria-hidden="true"></span>{profile.availability}</span><span>{profile.location}</span></div>
   </div>
