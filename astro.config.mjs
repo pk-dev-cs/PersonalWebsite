@@ -5,7 +5,7 @@ import { siteOrigin } from './config/site-origin.mjs';
 export default defineConfig({
   site: siteOrigin,
   output: 'static',
-  trailingSlash: 'always',
+  trailingSlash: 'ignore',
   integrations: [sitemap({ filter: (page) => !page.endsWith('/404/') })],
   markdown: {
     shikiConfig: { theme: 'github-dark' },

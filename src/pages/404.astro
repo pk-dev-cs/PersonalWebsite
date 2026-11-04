@@ -1,12 +1,23 @@
 ---
 import Layout from '../layouts/Layout.astro';
 ---
-<Layout title="Page not found" description="This path does not exist. Find your way back to the portfolio." noindex>
+<Layout title="404 - Route not found" description="Noosphere Connection Lost. The requested data-node is missing from the sacred archives." noindex>
   <div class="content-page not-found">
-    <p class="command">$ cd unknown-path</p>
-    <h1>404</h1>
-    <p class="lead">A path less travelled. Or one that doesn't exist.</p>
-    <p>The page may have moved, or the address might be a little off.</p>
-    <a class="button" href="/">Back to About <span aria-hidden="true">-&gt;</span></a>
+    <p class="command"><span aria-hidden="true">$ </span>resolve --route</p>
+    <div class="not-found-grid">
+      <div>
+        <p class="not-found-code">404 / route not found</p>
+        <h1>Noosphere Connection Lost</h1>
+        <p class="lead">The noospheric link to this data-node has been severed. Its coordinates are lost to the sacred archives. Follow a known route and restore communion with the Machine Spirit. Praise the Omnissiah.</p>
+      </div>
+      <pre class="not-found-art" aria-hidden="true">{` _  _    ___    _  _
+| || |  / _ \\  | || |
+| || |_| | | | | || |_
+|__   _| |_| | |__   _|
+   |_|  \\___/     |_|
+
+    [ signal lost ]`}</pre>
+    </div>
+    <p class="not-found-note"><span class="square" aria-hidden="true"></span>No page here. Plenty left to explore.</p>
   </div>
 </Layout>

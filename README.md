@@ -23,6 +23,8 @@ npm run preview
 
 `npm test` sprawdza gotowy `dist`, wiec najpierw wykonaj build. Na hosting statyczny wgrywaj zawartosc `dist`. Hosting musi obslugiwac katalogowe adresy URL i serwowac `404.html` dla nieistniejacych sciezek z kodem HTTP 404. Nie jest potrzebny serwer Node na produkcji.
 
+Strona 404 ma terminalowy komunikat "Noosphere Connection Lost" i grafike ASCII; powrot do strony odbywa sie przez wspolna nawigacje. Konfiguracja `trailingSlash: 'ignore'` pozwala pokazac wlasne 404 takze dla blednych adresow bez koncowego ukosnika w dev/preview, zamiast technicznego bledu Astro. Linki, canonical i sitemap nadal korzystaja z adresow zakonczonych ukosnikiem.
+
 ## Przed publikacja
 
 1. Skopiuj `.env.example` do `.env` i ustaw **SITE_URL** na prawdziwy publiczny origin, np. `https://twoja-domena.pl` (bez sciezki). Mozna zamiast pliku ustawic zmienna `SITE_URL` w srodowisku budowania; ma pierwszenstwo nad `.env`. To jedyne miejsce ustawiania domeny. Przebuduj po zmianie.

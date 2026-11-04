@@ -27,6 +27,17 @@ test('all required routes and assets are built', async () => {
   }
 });
 
+test('404 has a terminal-themed error without extra action links, images or JavaScript', async () => {
+  const html = await read('404.html');
+  assert.match(html, /<h1>Noosphere Connection Lost<\/h1>/);
+  assert.match(html, /<p class="lead">The noospheric link[^<]+Machine Spirit\. Praise the Omnissiah\.<\/p>/);
+  assert.match(html, /404 \/ route not found/);
+  assert.match(html, /<pre class="not-found-art" aria-hidden="true">/);
+  assert.doesNotMatch(html, /not-found-actions|Back to About|Take a detour to the blog/);
+  assert.match(html, /noindex, nofollow/);
+  assert.doesNotMatch(html, /<img|<iframe|data-page-transitions|<script(?! type="application\/ld\+json")/);
+});
+
 test('production is static with no executable client JavaScript or remote dependencies', async () => {
   assert.equal(files.filter((file) => /\.(?:m?js|cjs)$/.test(file)).length, 0);
   for (const file of htmlFiles) {
@@ -61,6 +72,7 @@ test('semantic pages have four correct navigation destinations and unique SEO', 
     descriptions.add(description);
     const canonical = html.match(/rel="canonical" href="([^"]+)"/)[1];
     assert.equal(new URL(canonical).origin, siteOrigin);
+    if (!file.endsWith(`${sep}404.html`)) assert.ok(new URL(canonical).pathname.endsWith('/'));
     assert.match(html, /property="og:image" content="[^"]+\/social-card\.png"/);
     assert.match(html, /name="twitter:card" content="summary_large_image"/);
     assert.match(html, /rel="alternate" type="application\/rss\+xml"/);
