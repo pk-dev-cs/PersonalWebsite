@@ -1,72 +1,164 @@
-# Terminal portfolio
+# Personal Website
 
-Statyczny prototyp w Astro 7. About jest strona startowa `/`; pozostale zakladki to Resume, Blog i Contact. Bez frameworkow UI, zewnetrznych fontow i wykonywalnego JavaScript po stronie klienta. Jedyny element script zawiera dane SEO JSON-LD.
+My personal corner of the web — a little about me, my professional background, things I write, and ways to get in touch.
 
-## Uruchomienie
+Built with Astro and TypeScript, with a terminal-inspired interface and a focus on simple, fast pages.
 
-Wymagany Node.js >= 22.23.4 i npm >= 9.6.5.
+**[Visit the website →](https://personalwebsite-production-d41f.up.railway.app/)**
 
-```powershell
-cd C:\projects\PersonalWebsite
+![Screenshot of Przemysław Kleszcz's personal website, showing the terminal-inspired About page](docs/images/personal-website.jpg)
+
+## About
+
+I'm **Przemysław Kleszcz** (`pk-dev-cs`), a full-stack developer based in Kraków, Poland. This website brings together my background in software development, notes on the web, and contact information.
+
+The design borrows from terminal windows and text editors: numbered navigation, file-like page labels, monospace typography, and a status bar. Underneath, it is a static website with ordinary links and no client-side application framework.
+
+## Features
+
+- **About** — a short introduction and a photographic background.
+- **Resume** — professional experience, skills, education, and languages.
+- **Blog** — Markdown posts with validated metadata, tags, and draft support.
+- **Contact** — email and social links.
+- **Custom 404** — a Mechanicum-inspired “Noosphere Connection Lost” page with ASCII art.
+- **Search and sharing metadata** — canonical URLs, Open Graph, Twitter cards, and JSON-LD.
+- **RSS and sitemap** — generated at build time alongside `robots.txt`.
+- **Responsive styling** — desktop and mobile layouts, print styles, and reduced-motion support.
+
+Pages are generated as HTML at build time. There is no executable browser JavaScript, client-side routing, analytics, or external font loading. The only script element contains structured SEO data. Images are optimized by Astro into WebP variants.
+
+## Tech stack
+
+| Area | Technology |
+| --- | --- |
+| Site generation | Astro 7 |
+| Language | TypeScript 6 |
+| Content | Markdown and Astro content collections |
+| Styling | CSS and system monospace fonts |
+| Feeds and discovery | `@astrojs/rss` and `@astrojs/sitemap` |
+| Verification | Astro Check and Node.js test runner |
+| Hosting | Railway, deployed from GitHub |
+
+## Run locally
+
+Use **Node.js 22.23.4 or newer** and npm.
+
+```sh
+git clone https://github.com/pk-dev-cs/PersonalWebsite.git
+cd PersonalWebsite
 npm ci
 npm run dev
 ```
 
-Otworz adres wypisany przez Astro (domyslnie `http://127.0.0.1:4321`).
+Open the address printed by Astro, usually [http://127.0.0.1:4321](http://127.0.0.1:4321).
 
-```powershell
+### Commands
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the local development server |
+| `npm run check` | Check Astro files and TypeScript |
+| `npm run build` | Generate the static website in `dist/` |
+| `npm test` | Verify the generated output; run a build first |
+| `npm run preview` | Preview the production build locally |
+
+To check a production build:
+
+```sh
 npm run check
 npm run build
 npm test
-npm run preview
 ```
 
-`npm test` sprawdza gotowy `dist`, wiec najpierw wykonaj build. Na hosting statyczny wgrywaj zawartosc `dist`. Hosting musi obslugiwac katalogowe adresy URL i serwowac `404.html` dla nieistniejacych sciezek z kodem HTTP 404. Nie jest potrzebny serwer Node na produkcji.
+## Configuration
 
-Strona 404 ma terminalowy komunikat "Noosphere Connection Lost" i grafike ASCII; powrot do strony odbywa sie przez wspolna nawigacje. Konfiguracja `trailingSlash: 'ignore'` pozwala pokazac wlasne 404 takze dla blednych adresow bez koncowego ukosnika w dev/preview, zamiast technicznego bledu Astro. Linki, canonical i sitemap nadal korzystaja z adresow zakonczonych ukosnikiem.
+### Public URL
 
-## Przed publikacja
+Copy `.env.example` to `.env` and set `SITE_URL` to the public origin:
 
-1. Skopiuj `.env.example` do `.env` i ustaw **SITE_URL** na prawdziwy publiczny origin, np. `https://twoja-domena.pl` (bez sciezki). Mozna zamiast pliku ustawic zmienna `SITE_URL` w srodowisku budowania; ma pierwszenstwo nad `.env`. To jedyne miejsce ustawiania domeny. Przebuduj po zmianie.
-2. Edytuj **src/config.ts**: `profile` zawiera dane Przemyslawa Kleszcza, a `resume` doswiadczenie, umiejetnosci, wyksztalcenie i jezyki przepisane z dostarczonego CV. Zachowano daty oraz status "Present" z dokumentu; nie dopisywano niepodanych dat edukacji ani poziomow jezykowych. Prywatny adres i numer telefonu nie sa publikowane. Sam PDF nie jest kopiowany do strony ani osadzany. Teksty powitalne About sa niezalezne od tresci CV. Sprawdz aktualnosc danych przed wdrozeniem. Pusty e-mail oznacza komunikat o nieskonfigurowanym kontakcie. Linki spolecznosciowe przyjmuja postac `{ label: 'GitHub', url: 'https://...' }`.
-3. Zastap lub usun przykladowe wpisy blogowe. Flaga `example` oznacza je czytelnie w UI.
-4. Opcjonalnie zastap `public/social-card.png` wlasna grafika 1200 x 630. Obecna grafika jest celowo neutralna, bez przykladowej tozsamosci; jej edytowalne zrodlo to `public/social-card.svg`. Po edycji SVG trzeba ponownie wyeksportowac PNG.
+```dotenv
+SITE_URL=https://personalwebsite-production-d41f.up.railway.app
+```
 
-Bez skonfigurowanego originu strona uzywa zarezerwowanego `https://example.invalid`, ma **noindex, nofollow**, a robots blokuje indeksowanie. To celowa ochrona prototypu. Ustawienie prawdziwego `SITE_URL` wlacza indeksowanie; nie jest zapewnieniem pozycji ani natychmiastowej indeksacji. Przed wdrozeniem nalezy samodzielnie zweryfikowac dane i domene.
+The value must be an HTTP(S) origin without a path, query, or fragment. A build environment variable takes precedence over `.env`. Rebuild after changing it: canonical URLs, feeds, sitemap entries, and sharing metadata are generated during the build.
 
-Zdjecie przy Resume znajduje sie w `src/assets/przemyslaw-kleszcz.jpg`. To portretowy kadr z dostarczonego zdjecia, bez metadanych oryginalu. Astro podczas budowania tworzy male warianty WebP 176 i 352 px; oryginalna fotografia nie trafia do `dist`. Aby zmienic portret, zastap ten plik, zachowujac proporcje 4:5.
+Without a configured URL, the site uses `https://example.invalid`, adds `noindex, nofollow`, and blocks crawling through `robots.txt`.
 
-Tlo panelu About pochodzi z `src/assets/main-background.png`. Astro generuje WebP o szerokosci 720 i 1440 px; telefon pobiera mniejszy wariant. Zdjecie jest osobna warstwa `main::before` z `opacity: .18` w `src/styles/global.css`, wiec tekst pozostaje w pelni kryjacy. Tlo nie obejmuje nawigacji, stopki, innych podstron ani wydruku.
+### Content and appearance
 
-## Dodawanie wpisow
+| File or directory | What to edit |
+| --- | --- |
+| `src/config.ts` | Profile, resume, contact details, social links, and navigation |
+| `src/content/blog/` | Blog posts in Markdown |
+| `src/styles/global.css` | Layout, colors, typography, and print styles |
+| `src/assets/main-background.png` | About page background |
+| `src/assets/przemyslaw-kleszcz.jpg` | Resume portrait; keep a 4:5 aspect ratio |
+| `public/social-card.png` | Sharing image, 1200 × 630 px |
+| `public/social-card.svg` | Editable sharing image source; re-export the PNG after editing |
 
-Utworz plik `src/content/blog/moj-wpis.md`:
+## Write a blog post
+
+Add a Markdown file to `src/content/blog/`, for example `my-first-post.md`:
 
 ```markdown
 ---
-title: "Tytul wpisu"
-description: "Krotki, unikalny opis do indeksu, RSS i wyszukiwarek."
+title: "My first post"
+description: "A short description for the blog index, RSS feed, and search engines."
 pubDate: 2026-11-04
-tags: ["astro", "notes"]
+tags: ["web", "notes"]
 draft: false
 example: false
 ---
 
-Pierwszy akapit.
+An opening paragraph.
 
-## Naglowek sekcji
+## A section heading
 
-Tresci w zwyklym Markdown, takze listy, tabele, obrazki i bloki kodu.
+The rest of the post goes here.
 ```
 
-Adres powstaje z nazwy pliku: `/blog/moj-wpis/`. Frontmatter jest walidowany przez kolekcje Astro. Opcjonalne `updatedDate` nie moze byc wczesniejsze niz `pubDate`. Daty wyswietlane sa w UTC. Wpisy z `draft: true` lub przyszla data nie trafiaja do indeksu, routingu ani RSS (aby opublikowac zaplanowany wpis, trzeba ponownie uruchomic build). Dla nowego wpisu zacznij od `##`, bo `h1` generuje szablon.
+The filename becomes the URL: `/blog/my-first-post/`. Start headings in the body at `##`; the page template supplies the main heading.
 
-Obrazki mozna importowac wzglednie w Markdown, aby Astro zoptymalizowalo je podczas budowania; zawsze podawaj sensowny tekst alternatywny. Zwykle lokalne zasoby umieszczaj w `public/`.
+- Posts marked `draft: true` or dated in the future are excluded from the blog index, post routes, and RSS feed.
+- Scheduled posts require a new build when their publication date arrives.
+- Optional `updatedDate` must be on or after `pubDate`. Dates are displayed in UTC.
+- `example: true` visibly labels sample content. The repository includes two example posts.
+- Local images can be imported through Markdown for Astro optimization. Include descriptive alternative text.
 
-## SEO i wydajnosc
+## Deployment
 
-Kazda strona ma wlasny tytul/opis, canonical, Open Graph, Twitter card i JSON-LD. Wpisy maja date publikacji/aktualizacji oraz schemat BlogPosting. Dostepne sa `/rss.xml`, `/robots.txt`, `/sitemap-index.xml` i statyczne 404. RSS zawiera streszczenia i linki do pelnych wpisow. Kanoniczne adresy sa zakonczone ukosnikiem.
+The live site runs on Railway under the project and service name **PersonalWebsite**. The service follows `pk-dev-cs/PersonalWebsite` on **`main`**; pushes to that branch trigger automatic deployments.
 
-Nawigacja to normalne linki, bez animowanych przejsc, przechwytywania klikniec, routera ani hydracji. Systemowy monospace, maly lokalny CSS, bez analityki, cookies, fetchowania danych ani zewnetrznych polaczen. Jedyna animacja to migajacy kursor, wykonany wylacznie w CSS. Respektuje `prefers-reduced-motion`; przy ograniczonym ruchu i na wydruku kursor pozostaje statyczny. Wyglad korzysta dokladnie z akcentu `#0d699e`; czytelny tekst na ciemnym tle pozostaje jasny. Systemowe fonty moga sie nieznacznie roznic miedzy platformami.
+The current Railway settings are configured in the service dashboard:
 
-Na hostingu wlacz kompresje Brotli/gzip, HTTPS oraz dlugi cache dla hashowanych plikow `/_astro/`. HTML i RSS powinny miec krotszy cache. To konfiguracja hostingu, nie kod wykonywany przez odwiedzajacego.
+| Setting | Value |
+| --- | --- |
+| Builder | Railpack |
+| Build command | `npm run build && npm install --no-save --package-lock=false serve@14.2.4` |
+| Start command | `./node_modules/.bin/serve dist --listen tcp://0.0.0.0:$PORT --no-clipboard` |
+| Health check | `/` |
+| `PORT` | `8080` |
+| `RAILPACK_NODE_VERSION` | `24` |
+| `SITE_URL` | `https://personalwebsite-production-d41f.up.railway.app` |
+
+The static server is installed during the Railway build. No server-side application or database is required.
+
+For another static host, build the project and publish the contents of `dist/`. Configure directory-style URLs and serve `404.html` with HTTP status **404** for missing pages. Enable HTTPS and compression, and use a long cache lifetime for hashed files under `/_astro/` with a shorter lifetime for HTML and feeds.
+
+## Project structure
+
+```text
+config/                 Public URL loading and validation
+docs/images/            Screenshots used in this README
+public/                 Static assets copied into the build
+src/
+  assets/               Images processed by Astro
+  content/blog/         Markdown blog posts
+  content.config.ts     Blog content schema
+  config.ts             Personal details and navigation
+  layouts/              Shared page layout and metadata
+  lib/                  Blog helpers
+  pages/                Pages, blog routes, RSS, and robots.txt
+  styles/               Global stylesheet
+tests/                  Checks against the generated website
+```
