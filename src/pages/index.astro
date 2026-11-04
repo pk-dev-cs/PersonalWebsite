@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { profile } from '../config';
+---
+<Layout title="About" description={profile.siteDescription} section="About">
+  <div class="content-page about-page">
+    <div class="hero">
+      <section class="hero-copy" aria-labelledby="name">
+        <p class="command"><span aria-hidden="true">$ </span>whoami</p>
+        <h1 id="name">{profile.handle}<span class="cursor" aria-hidden="true"></span></h1>
+        <p class="hero-name">{profile.firstName} {profile.lastName}.</p>
+        <p class="role">{profile.role}</p>
+        <p class="hero-description">{profile.description}</p>
+        <a class="button" href="/contact/">Get in touch <span aria-hidden="true">-&gt;</span></a>
+      </section>
+      <figure class="ascii-art" aria-hidden="true">
+        <pre>{`    .----------------.
+   /                /|
+  /     ${profile.initials.toUpperCase().replace('.', ' / ')}      / |
+ /________________/  |
+ |                |  |
+ |   > hello_     |  |
+ |                | /
+ |                |/
+ '----------------'`}</pre>
+        <figcaption>[ human inside ]</figcaption>
+      </figure>
+    </div>
+    <div class="availability"><span><span class="square" aria-hidden="true"></span>{profile.availability}</span><span>{profile.location}</span></div>
+  </div>
+</Layout>

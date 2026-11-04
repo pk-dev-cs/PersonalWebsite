@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0c1012"/>
+  <rect x="40" y="40" width="1120" height="550" fill="#13191b" stroke="#495458"/>
+  <path d="M40 104h1120M40 542h1120" stroke="#495458"/>
+  <g font-family="monospace">
+    <text x="70" y="81" font-size="22" fill="#e6ebe7">[ portfolio / notes ]</text>
+    <text x="96" y="201" font-size="24" fill="#aab8bd">$ whoami</text>
+    <text x="90" y="303" font-size="72" font-weight="bold" fill="#e6ebe7">LESS, BUT</text>
+    <text x="90" y="389" font-size="72" font-weight="bold" fill="#e6ebe7">BETTER.</text>
+    <rect x="404" y="328" width="34" height="66" fill="#0d699e"/>
+    <text x="96" y="468" font-size="24" fill="#aab8bd">Development. Design. A little thinking out loud.</text>
+    <rect x="41" y="543" width="128" height="46" fill="#0d699e"/>
+    <text x="66" y="574" font-size="20" fill="#fff">NORMAL</text>
+    <text x="198" y="574" font-size="20" fill="#aab8bd">about.md</text>
+  </g>
+</svg>

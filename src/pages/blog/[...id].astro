@@ -1,0 +1,31 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { publishedPosts, formatDate } from '../../lib/blog';
+
+export async function getStaticPaths() {
+  return (await publishedPosts()).map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+interface Props { post: CollectionEntry<'blog'> }
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+<Layout title={post.data.title} description={post.data.description} section="Blog" article={{ published: post.data.pubDate.toISOString(), modified: post.data.updatedDate?.toISOString() }}>
+  <div class="content-page article-page">
+    <a class="text-link back-link" href="/blog/"><span aria-hidden="true">&lt;-</span> All notes</a>
+    <article>
+      <header class="article-header">
+        <div class="post-meta">
+          <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+          {post.data.example && <span>Illustrative sample</span>}
+        </div>
+        <h1>{post.data.title}</h1>
+        <p class="lead">{post.data.description}</p>
+        {post.data.updatedDate && <p class="updated">Updated <time datetime={post.data.updatedDate.toISOString()}>{formatDate(post.data.updatedDate)}</time></p>}
+        <ul class="inline-tags" aria-label="Topics">{post.data.tags.map((tag) => <li>#{tag}</li>)}</ul>
+      </header>
+      <div class="prose"><Content /></div>
+    </article>
+    <div class="article-end"><span aria-hidden="true">[ end of file ]</span><a class="text-link" href="/rss.xml">Follow via RSS -&gt;</a></div>
+  </div>
+</Layout>
