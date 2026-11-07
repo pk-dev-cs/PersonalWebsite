@@ -7,7 +7,11 @@ import { profile } from '../config';
     <div class="hero">
       <section class="hero-copy" aria-labelledby="name">
         <p class="command"><span aria-hidden="true">$ </span>whoami</p>
-        <h1 id="name">{profile.handle}<span class="cursor" aria-hidden="true"></span></h1>
+        <h1 id="name" aria-label={profile.handle}>
+          <span class="typewriter" style={`--characters: ${Array.from(profile.handle).length}`} aria-hidden="true">
+            <span class="typewriter-text">{profile.handle}</span><span class="cursor"></span>
+          </span>
+        </h1>
         <p class="hero-name">{profile.firstName} {profile.lastName}.</p>
         <p class="role">{profile.role}</p>
         <p class="hero-description">{profile.description}</p>
