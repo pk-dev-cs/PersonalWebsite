@@ -9,7 +9,7 @@ export const profile = {
   handle: 'pk-dev-cs',
   role: 'Developer. Maker. Curious human.',
   description: 'I build thoughtful digital experiences.',
-  siteDescription: 'Przemysław Kleszcz - Technical Lead and full-stack developer. Experience with .NET, Angular, application architecture, and development teams.',
+  siteDescription: 'Przemysław Kleszcz - Senior Software Developer. Experience with .NET, Angular, application architecture, and development teams.',
   location: 'Kraków, PL',
   availability: 'Let’s talk about software',
   email: 'prz.kleszcz@gmail.com' as string,
@@ -24,7 +24,19 @@ export const resume = {
   intro: 'Technical leadership, full-stack development, and application architecture across web, desktop, mobile, and integration systems.',
   experience: [
     {
-      start: '2022-02', end: null, role: 'Technical Lead', company: 'Caspio', location: 'Kraków',
+      start: '2024-05', end: null, role: 'Senior Software Developer', company: 'KMD', location: 'Warsaw',
+      responsibilities: [
+        'Developing and maintaining legacy desktop and web applications built with C#, WPF, and ASP.NET.',
+        'Modernizing a legacy web application from .NET Framework 4.7, Knockout, jQuery, and Durandal to .NET 10 and Vue.js 3.',
+        'Implementing OAuth 2.0 across the organization to standardize application authorization.',
+        'Building and maintaining a test automation platform covering unit, end-to-end, and contract testing with Vitest, Playwright, and Pact.',
+        'Maintaining and enhancing Azure DevOps environments, pipelines, stages, and automated checks, including contract verification.',
+        'Providing rotating production support, monitoring logs and system health, and responding to incidents.',
+        'Using OpenAI Codex and GitHub Copilot for feature development, legacy refactoring, and automated testing, with human review.',
+      ],
+    },
+    {
+      start: '2022-02', end: '2024-03', role: 'Technical Lead', company: 'Caspio', location: 'Kraków',
       responsibilities: [
         'Maintaining a large-scale legacy system (C#, VB.NET).',
         'Leading a team of developers and testers.',
@@ -70,11 +82,14 @@ export const resume = {
     },
   ],
   skills: [
-    { category: 'Programming languages', items: ['C#', 'C', 'Java', 'JavaScript', 'TypeScript'], note: 'Practical experience with these languages.' },
-    { category: 'Platform', items: ['.NET'], note: 'Very good knowledge of the .NET platform.' },
-    { category: 'Frontend', items: ['Angular'], note: 'Experience with Angular.' },
-    { category: 'Databases', items: ['MSSQL', 'MySQL', 'Oracle'], note: '' },
-    { category: 'Version control', items: ['Git'], note: 'Very good knowledge of Git.' },
+    { category: 'Programming languages', items: ['C#', 'C', 'Java', 'JavaScript', 'TypeScript'] },
+    { category: '.NET & desktop', items: ['.NET', '.NET Framework', 'ASP.NET', 'WPF', 'WCF'] },
+    { category: 'Frontend', items: ['Angular', 'Vue.js'] },
+    { category: 'Testing', items: ['Vitest', 'Playwright', 'Pact', 'FlaUI', 'NUnit'] },
+    { category: 'DevOps & version control', items: ['Azure DevOps', 'CI/CD', 'Git'] },
+    { category: 'Authorization', items: ['OAuth 2.0'] },
+    { category: 'Databases', items: ['MSSQL', 'MySQL', 'Oracle'] },
+    { category: 'AI-assisted development', items: ['OpenAI Codex', 'GitHub Copilot'] },
   ],
   education: {
     degree: 'Master of Science in Engineering',
