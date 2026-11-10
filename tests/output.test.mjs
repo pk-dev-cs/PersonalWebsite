@@ -150,17 +150,53 @@ test('small pages and a real PNG social image are shipped', async () => {
   assert.equal(png.readUInt32BE(20), 630);
 });
 
+test('resume Toolkit groups current technologies without generic proficiency notes', async () => {
+  const html = await read('resume/index.html');
+  const toolkit = html.match(/<section class="resume-section" aria-labelledby="toolkit">([\s\S]*?)<\/section>/)[1];
+  const groups = [...toolkit.matchAll(/<div class="skill-group">\s*<h3>(.*?)<\/h3>\s*<ul class="tags">([\s\S]*?)<\/ul>\s*<\/div>/g)];
+  assert.deepEqual(groups.map((group) => [
+    group[1].replace(/&#38;|&amp;/g, '&'),
+    [...group[2].matchAll(/<li>(.*?)<\/li>/g)].map((item) => item[1]),
+  ]), [
+    ['Programming languages', ['C#', 'C', 'Java', 'JavaScript', 'TypeScript']],
+    ['.NET & desktop', ['.NET', '.NET Framework', 'ASP.NET', 'WPF', 'WCF']],
+    ['Frontend', ['Angular', 'Vue.js']],
+    ['Testing', ['Vitest', 'Playwright', 'Pact', 'FlaUI', 'NUnit']],
+    ['DevOps & version control', ['Azure DevOps', 'CI/CD', 'Git']],
+    ['Authorization', ['OAuth 2.0']],
+    ['Databases', ['MSSQL', 'MySQL', 'Oracle']],
+    ['AI-assisted development', ['OpenAI Codex', 'GitHub Copilot']],
+  ]);
+  assert.doesNotMatch(toolkit, /<p\b/);
+});
+
 test('resume contains extracted professional content as native HTML, not a PDF embed', async () => {
   const html = await read('resume/index.html');
   for (const text of [
-    'Przemysław Kleszcz', 'Technical Lead', 'Caspio', 'Aon', 'Global Logic',
+    'Przemysław Kleszcz', 'Senior Software Developer', 'KMD', 'Technical Lead', 'Caspio', 'Aon', 'Global Logic',
     'Aype Sp. z o.o', 'Tema Komputer Sp. z o.o', 'Andrychów',
     'Master of Science in Engineering', 'Cracow University of Technology',
     'OPC-UA', 'AUREA CRM', 'MSSQL', 'MySQL', 'Oracle', 'Polish', 'English',
   ]) assert.ok(html.includes(text), text);
-  assert.equal([...html.matchAll(/class="experience-row"/g)].length, 5);
-  assert.equal([...html.matchAll(/class="responsibilities"/g)].length, 5);
-  assert.equal([...html.matchAll(/<time datetime="/g)].length, 9);
+  assert.equal([...html.matchAll(/class="experience-row"/g)].length, 6);
+  assert.equal([...html.matchAll(/class="responsibilities"/g)].length, 6);
+  assert.equal([...html.matchAll(/<time datetime="/g)].length, 11);
+  assert.match(html, /<p class="resume-role">Senior Software Developer<\/p>/);
+  const jobs = [...html.matchAll(/<article class="experience-row">([\s\S]*?)<\/article>/g)];
+  assert.match(jobs[0][1], /<time datetime="2024-05">May 2024<\/time> - Present/);
+  assert.match(jobs[0][1], /<h3>Senior Software Developer<\/h3>/);
+  assert.match(jobs[0][1], /<p class="company">KMD <span class="muted">\/ Warsaw<\/span><\/p>/);
+  assert.equal([...jobs[0][1].matchAll(/<li>/g)].length, 7);
+  for (const responsibility of [
+    'Developing and maintaining legacy desktop and web applications built with C#, WPF, and ASP.NET.',
+    'Modernizing a legacy web application from .NET Framework 4.7, Knockout, jQuery, and Durandal to .NET 10 and Vue.js 3.',
+    'Implementing OAuth 2.0 across the organization to standardize application authorization.',
+    'Building and maintaining a test automation platform covering unit, end-to-end, and contract testing with Vitest, Playwright, and Pact.',
+    'Maintaining and enhancing Azure DevOps environments, pipelines, stages, and automated checks, including contract verification.',
+    'Providing rotating production support, monitoring logs and system health, and responding to incidents.',
+    'Using OpenAI Codex and GitHub Copilot for feature development, legacy refactoring, and automated testing, with human review.',
+  ]) assert.ok(jobs[0][1].includes(`<li>${responsibility}</li>`), responsibility);
+  assert.match(jobs[1][1], /<time datetime="2022-02">Feb 2022<\/time> - <time datetime="2024-03">Mar 2024<\/time>/);
   assert.match(html, /<img[^>]+class="resume-photo"/);
   assert.match(html, /alt="Przemysław Kleszcz"/);
   assert.match(html, /width="176" height="220"/);

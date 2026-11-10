@@ -7,7 +7,7 @@ import portrait from '../assets/przemyslaw-kleszcz.jpg';
 const monthFormat = new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric', timeZone: 'UTC' });
 const formatMonth = (value: string) => monthFormat.format(new Date(`${value}-01T00:00:00Z`));
 ---
-<Layout title="Resume" description={`${profile.firstName} ${profile.lastName} - Technical Lead with experience in .NET, Angular, software architecture, and leading development teams.`} section="Resume">
+<Layout title="Resume" description={`${profile.firstName} ${profile.lastName} - ${resume.experience[0].role} with experience in .NET, Angular, software architecture, and leading development teams.`} section="Resume">
   <div class="content-page resume-page">
     <p class="command">$ cat resume.md</p>
     <header class="resume-header">
@@ -41,8 +41,8 @@ const formatMonth = (value: string) => monthFormat.format(new Date(`${value}-01T
           <p class="period"><time datetime={job.start}>{formatMonth(job.start)}</time> - {job.end ? <time datetime={job.end}>{formatMonth(job.end)}</time> : 'Present'}</p>
           <div>
             <h3>{job.role}</h3>
-            <p class="company">{job.company} <span class="muted">/ {job.location}</span></p>
-            <ul class="responsibilities">{job.responsibilities.map((responsibility) => <li>{responsibility}</li>)}</ul>
+            <p class="company">{job.company}{job.location && <> <span class="muted">/ {job.location}</span></>}</p>
+            {job.responsibilities.length > 0 && <ul class="responsibilities">{job.responsibilities.map((responsibility) => <li>{responsibility}</li>)}</ul>}
           </div>
         </article>
       ))}
@@ -54,7 +54,6 @@ const formatMonth = (value: string) => monthFormat.format(new Date(`${value}-01T
           <div class="skill-group">
             <h3>{group.category}</h3>
             <ul class="tags">{group.items.map((skill) => <li>{skill}</li>)}</ul>
-            {group.note && <p class="muted">{group.note}</p>}
           </div>
         ))}
       </div>
